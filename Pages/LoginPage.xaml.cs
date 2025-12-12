@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MilkManufacture.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace MilkManufacture.Pages
     /// </summary>
     public partial class LoginPage : Page
     {
+        private static Dictionary<int, int> _failedAttempts = new Dictionary<int, int>();
         public LoginPage()
         {
             InitializeComponent();
@@ -42,8 +44,7 @@ namespace MilkManufacture.Pages
 
                 if (currentUser == null)
                 {
-                    MessageBox.Show("Вы ввели неверный логин или пароль. Пожалуйста проверьте ещё раз введенные данные.",
-                        "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ShowGenericError();
                     return;
                 }
 
@@ -58,13 +59,17 @@ namespace MilkManufacture.Pages
 
                 if (isPasswordValid)
                 {
+                    if (_failedAttempts.ContainsKey(currentUser.Id))
+                    {
+                        _failedAttempts.Remove(currentUser.Id);
+                    }
+
                     App.CurrentUser = currentUser;
                     NavigationService.Navigate(new CaptchaPage());
                 }
                 else
                 {
-                    MessageBox.Show("Вы ввели неверный логин или пароль. Пожалуйста проверьте ещё раз введенные данные.",
-                        "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    HandleFailedLogin(currentUser);
                 }
             }
             catch (Exception ex)
@@ -90,6 +95,47 @@ namespace MilkManufacture.Pages
             {
                 return false;
             }
+        }
+
+        private void HandleFailedLogin(User user)
+        {
+            if (!_failedAttempts.ContainsKey(user.Id))
+            {
+                _failedAttempts[user.Id] = 0;
+            }
+
+            _failedAttempts[user.Id]++;
+
+            if (_failedAttempts[user.Id] >= 3)
+            {
+                user.Blocked = true;
+                App.Context.SaveChanges();
+
+                _failedAttempts.Remove(user.Id);
+
+                MessageBox.Show("Аккаунт заблокирован после 3 неудачных попыток входа. Обратитесь к администратору для разблокировки.",
+                    "Блокировка", MessageBoxButton.OK, MessageBoxImage.Stop);
+            }
+            else
+            {
+                int remainingAttempts = 3 - _failedAttempts[user.Id];
+
+                if (remainingAttempts > 0)
+                {
+                    MessageBox.Show($"Неверный логин или пароль. Осталось попыток: {remainingAttempts}",
+                        "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    ShowGenericError();
+                }
+            }
+        }
+
+        private void ShowGenericError()
+        {
+            MessageBox.Show("Вы ввели неверный логин или пароль. Пожалуйста проверьте ещё раз введенные данные.",
+                "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

@@ -23,12 +23,21 @@ namespace MilkManufacture.Pages
     {
         private List<Captcha> _captchaFragments = new List<Captcha>();
         private Dictionary<Border, (int row, int col)> _borderPositions = new Dictionary<Border, (int, int)>();
+        private int _attempts = 0;
+        private const int MAX_ATTEMPTS = 3;
+        private User _currentUser;
 
         public bool IsCaptchaPassed { get; private set; } = false;
         public CaptchaPage()
         {
             InitializeComponent();
+            UpdateAttemptsText();
             LoadNewCaptcha();
+        }
+
+        private void UpdateAttemptsText()
+        {
+            TxtAttempts.Text = $"Попыток: {_attempts}/{MAX_ATTEMPTS}";
         }
 
         private void LoadNewCaptcha()
@@ -179,12 +188,35 @@ namespace MilkManufacture.Pages
             {
                 IsCaptchaPassed = true;
                 MessageBox.Show("Вы успешно авторизовались");
+                App.CurrentUser = _currentUser;
                 Manager.MainFrame.Navigate(new UsersPage());
             }
             else
             {
-                MessageBox.Show("Неправильно!");
-                LoadNewCaptcha();
+                _attempts++;
+                UpdateAttemptsText();
+
+                if (_attempts >= MAX_ATTEMPTS)
+                {
+                    try
+                    {
+                        _currentUser.Blocked = true;
+                        Manufacture_bdEntities1.GetContext().SaveChanges();
+                        MessageBox.Show("Вы заблокированы после 3 неудачных попыток капчи. Обратитесь к администратору.");
+                        Manager.MainFrame.Navigate(new LoginPage());
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка блокировки аккаунта");
+                        Manager.MainFrame.Navigate(new LoginPage());
+                    }
+                }
+                else
+                {
+                    int remaining = MAX_ATTEMPTS - _attempts;
+                    MessageBox.Show($"Неправильно! Осталось попыток: {remaining}");
+                    LoadNewCaptcha();
+                }
             }
         }
     }
