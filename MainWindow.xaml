@@ -1,0 +1,22 @@
+﻿<Window x:Class="MilkManufacture.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MilkManufacture"
+        mc:Ignorable="d"
+        Title="MilkFactory" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Frame Name="FrameMain" Grid.Row="1" NavigationUIVisibility="Hidden"/>
+        <TextBlock Text="Milk Factory" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        <Grid Background="LightSkyBlue" Panel.ZIndex="-2"/>
+        <Button Content="Назад" Name="BtnBack" Click="BtnBack_Click" Width="175" Height="30" HorizontalAlignment="Right" Margin="5"></Button>
+        <Button Grid.Row="2" Content="Выгрузка данных" HorizontalAlignment="Left" VerticalAlignment="Center" Width="175" Height="30" Margin="10,0,0,0"/>
+    </Grid>
+</Window>
