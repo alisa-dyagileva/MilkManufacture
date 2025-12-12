@@ -19,6 +19,10 @@ namespace MilkManufacture.Entities
         public byte[] Password { get; set; }
         public Nullable<int> RoleId { get; set; }
         public Nullable<bool> Blocked { get; set; }
+        public string FIO { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Snils { get; set; }
     
         public virtual Role Role { get; set; }
     }

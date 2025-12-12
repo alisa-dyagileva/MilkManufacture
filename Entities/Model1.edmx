@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище Manufacture_bdModel1" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище Manufacture_bdModel1" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Captcha">
           <Key>
             <PropertyRef Name="Id" />
@@ -117,6 +117,10 @@
           <Property Name="Password" Type="varbinary" MaxLength="64" />
           <Property Name="RoleId" Type="int" />
           <Property Name="Blocked" Type="bit" />
+          <Property Name="FIO" Type="nchar" MaxLength="150" />
+          <Property Name="Email" Type="nchar" MaxLength="100" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Snils" Type="nchar" MaxLength="25" />
         </EntityType>
         <Association Name="FK_Nomenclature_UnitOfMeasurement">
           <End Role="UnitOfMeasurement" Type="Self.UnitOfMeasurement" Multiplicity="0..1" />
@@ -276,8 +280,7 @@
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Manufacture_bdModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -410,6 +413,10 @@
           <Property Name="Password" Type="Binary" MaxLength="64" FixedLength="false" />
           <Property Name="RoleId" Type="Int32" />
           <Property Name="Blocked" Type="Boolean" />
+          <Property Name="FIO" Type="String" MaxLength="150" FixedLength="true" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Snils" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Role" Relationship="Self.FK_Users_Role" FromRole="Users" ToRole="Role" />
         </EntityType>
         <Association Name="FK_Order_Customers1">
@@ -698,6 +705,10 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="Blocked" ColumnName="Blocked" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Snils" ColumnName="Snils" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -8,33 +8,112 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="AddEditPage">
 
-    <Grid Margin="0,51,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid>
+        <Border Background="#4682B4" Height="50" VerticalAlignment="Top">
+            <TextBlock Text="Добавление/редактирование пользователя" 
+                       Foreground="White" 
+                       FontSize="18" 
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"/>
+        </Border>
 
-        <TextBlock Text="Логин" Grid.Row="0" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
-        <TextBox x:Name="LoginTextBox" Grid.Row="0" Grid.Column="1" Text="{Binding Login}" MaxLength="100" Margin="10" Height="30"/>
+        <Border Background="White" 
+                Margin="30,70,30,30" 
+                BorderBrush="#B0C4DE" 
+                BorderThickness="1"
+                Padding="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="40"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <TextBlock Text="Роль" Grid.Row="1" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
-        <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboRole" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedValue="{Binding RoleId}" Margin="10" Height="30"/>
+                <TextBlock Text="ФИО" Grid.Row="0" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
+                <Grid Grid.Row="0" Grid.Column="1" Margin="10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="FioError" Grid.Column="0" Text="❗" Foreground="Red" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed" ToolTip="ФИО должно содержать только буквы, пробелы и дефисы"/>
+                    <TextBox x:Name="FioTextBox" Grid.Column="1" Text="{Binding FIO}" MaxLength="100" Height="30" Margin="5,0,5,0" BorderBrush="Gray" BorderThickness="1"/>
+                    <Button x:Name="BtnGetFio" Grid.Column="2" Width="30" Height="30" Click="BtnGetFio_Click" ToolTip="Получить данные из API">
+                        <TextBlock Text="✨" FontSize="14"/>
+                    </Button>
+                </Grid>
 
-        <TextBlock Text="Блокировка" Grid.Row="2" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
-        <CheckBox Grid.Row="2" Grid.Column="1" x:Name="CbBlocked" IsChecked="{Binding Blocked}" Margin="10" VerticalAlignment="Center">
-            <TextBlock Text="Заблокировать пользователя"/>
-        </CheckBox>
+                <TextBlock Text="Email" Grid.Row="1" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
+                <Grid Grid.Row="1" Grid.Column="1" Margin="10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="EmailError" Grid.Column="0" Text="❗" Foreground="Red" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed" ToolTip="Email имеет неверный формат"/>
+                    <TextBox x:Name="EmailTextBox" Grid.Column="1" Text="{Binding Email}" MaxLength="100" Height="30" Margin="5,0,5,0" BorderBrush="Gray" BorderThickness="1"/>
+                    <Button x:Name="BtnGetEmail" Grid.Column="2" Width="30" Height="30" Click="BtnGetEmail_Click" ToolTip="Получить данные из API">
+                        <TextBlock Text="✨" FontSize="14"/>
+                    </Button>
+                </Grid>
 
-        <TextBlock Text="Пароль" Grid.Row="3" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
-        <TextBox Name="PasswordTextBox" Grid.Column="1" Margin="5,5,5,5" Grid.Row="3"/>
+                <TextBlock Text="Телефон" Grid.Row="2" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
+                <Grid Grid.Row="2" Grid.Column="1" Margin="10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="PhoneError" Grid.Column="0" Text="❗" Foreground="Red" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed" ToolTip="Телефон должен соответствовать формату +7 945 678-90-12"/>
+                    <TextBox x:Name="PhoneTextBox" Grid.Column="1" Text="{Binding Phone}" MaxLength="20" Height="30" Margin="5,0,5,0" BorderBrush="Gray" BorderThickness="1"/>
+                    <Button x:Name="BtnGetPhone" Grid.Column="2" Width="30" Height="30" Click="BtnGetPhone_Click" ToolTip="Получить данные из API">
+                        <TextBlock Text="✨" FontSize="14"/>
+                    </Button>
+                </Grid>
 
-        <Button Grid.Row="4" Grid.Column="1" Content="Сохранить" Name="BtnSave" Click="BtnSave_Click" Width="150" Height="30" Margin="10"/>
+                <TextBlock Text="СНИЛС" Grid.Row="3" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
+                <Grid Grid.Row="3" Grid.Column="1" Margin="10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="SnilsError" Grid.Column="0" Text="❗" Foreground="Red" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed" ToolTip="СНИЛС должен соответствовать формату 789-012-345 67 (11 цифр)"/>
+                    <TextBox x:Name="SnilsTextBox" Grid.Column="1" Text="{Binding Snils}" MaxLength="14" Height="30" Margin="5,0,5,0" BorderBrush="Gray" BorderThickness="1"/>
+                    <Button x:Name="BtnGetSnils" Grid.Column="2" Width="30" Height="30" Click="BtnGetSnils_Click" ToolTip="Получить данные из API">
+                        <TextBlock Text="✨" FontSize="14"/>
+                    </Button>
+                </Grid>
+
+                <TextBlock Text="Логин" Grid.Row="4" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
+                <TextBox x:Name="LoginTextBox" Grid.Row="4" Grid.Column="1" Text="{Binding Login}" MaxLength="100" Margin="10" Height="30" BorderBrush="Gray" BorderThickness="1"/>
+
+                <TextBlock Text="Роль" Grid.Row="5" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="5" Grid.Column="1" x:Name="ComboRole" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedValue="{Binding RoleId}" Margin="10" Height="30" BorderBrush="Gray" BorderThickness="1"/>
+
+                <TextBlock Text="Блокировка" Grid.Row="6" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
+                <CheckBox Grid.Row="6" Grid.Column="1" x:Name="CbBlocked" IsChecked="{Binding Blocked}" Margin="10" VerticalAlignment="Center">
+                    <TextBlock Text="Заблокировать пользователя"/>
+                </CheckBox>
+
+                <TextBlock Text="Пароль" Grid.Row="7" Grid.Column="0" Margin="10" VerticalAlignment="Center"/>
+                <PasswordBox x:Name="PasswordBox" Grid.Row="7" Grid.Column="1" Margin="10" Height="30" BorderBrush="Gray" BorderThickness="1"/>
+
+                <Button Grid.Row="8" Grid.Column="1" Content="Сохранить" Name="BtnSave" Click="BtnSave_Click" Width="150" Height="30" Margin="10"/>
+                <Button Grid.Row="8" Grid.Column="1" Content="Заполнить все" Name="BtnLoad" Click="BtnLoad_Click" Width="150" Height="30" Margin="416,10,34,10"/>
+            </Grid>
+        </Border>
     </Grid>
 </Page>
